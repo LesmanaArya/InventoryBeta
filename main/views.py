@@ -5,4 +5,4 @@ from .models import Item
 
 def home(request):
     all_items = Item.objects.all
-    return render(request, 'home.html', {'all' : all_items})
+    return render(request, 'home.html', {'all' : all_items}) #Render isi dari data Item kita ke file home.html

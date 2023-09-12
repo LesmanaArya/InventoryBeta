@@ -3,5 +3,5 @@ from . import views
 
 #URL Config
 urlpatterns = [
-    path('', views.home),
+    path('', views.home), #Jika url main nya berupa string kosong, jalankan fungsi home yang ada di views.py
 ]
