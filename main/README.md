@@ -18,4 +18,5 @@ MVVM adalah Model-View-ViewModel. Pada MVVM, yang menjadi jembatan antar Model d
 
 
 TUGAS 2
-1 Untuk POST, nama variabel atau value nya tidak ditampilkan di url serta tidak ada batas panjang value yang ingin diberikan. Untuk GET, nama variabel atau value akan ditampilkan di url serta batas panjang value yang akan diberikan adalah 255 karakter. POST juga men-support berbagai jenis data seperti String, Integer, Binary, dll, sedangkan GET hanya support String
+1. Untuk POST, nama variabel atau value nya tidak ditampilkan di url serta tidak ada batas panjang value yang ingin diberikan. Untuk GET, nama variabel atau value akan ditampilkan di url serta batas panjang value yang akan diberikan adalah 255 karakter. POST juga men-support berbagai jenis data seperti String, Integer, Binary, dll, sedangkan GET hanya support String.
+2.
