@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <style>
+        h2 {text-align: center;}
         table, th, td {
           border:1px solid black;
           border-collapse: collapse;
@@ -16,8 +17,8 @@
         <p>2206081603</p>
         <p>PBP F</p> 
         <hr>
-        <br/>
-
+        <h2>Bambang memiliki {{ total_item }} nama item di Inventory nya</h2>
+        <h2>Isi inventory Bambang saat ini adalah {{ total_amount }} buah item</h2>
             <table style="width: 100%">
                 <tr>
                     <th>Name</th>
@@ -33,9 +34,14 @@
                     <td>{{ i.description }}</td>
                     <td>{{ i.effect }}</td>
                     <td>{{ i.value }}</td>
-
                 </tr>
                 {% endfor %}
             </table>
+        <br>
+        <a href="{% url 'main:create_product' %}">
+            <button>
+                Add New Product
+            </button>
+        </a>
     </body>
 </html>

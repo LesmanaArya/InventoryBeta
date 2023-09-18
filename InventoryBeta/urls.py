@@ -19,6 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')) #Jika kita tidak menspesifikkan path url nya, jalankan url nya app main
+    path('', include('main.urls', namespace='main')) #Jika kita tidak menspesifikkan path url nya, jalankan url nya app main
 
 ]
