@@ -13,7 +13,7 @@
     <body>
         <h1>Inventory Si Bambang</h1>
 
-        <p>Arya Lesmana</p>
+        <p>{{ name }}</p>
         <p>2206081603</p>
         <p>PBP F</p> 
         <hr>
@@ -26,6 +26,7 @@
                     <th>Description</th>
                     <th>Effect</th>
                     <th>Value</th>
+                    <th>Remove</th>
                 </tr>
                     {% for i in all %}
                 <tr>
@@ -37,11 +38,17 @@
                 </tr>
                 {% endfor %}
             </table>
+            <h5>Sesi terakhir login: {{ last_login }}</h5>
         <br>
         <a href="{% url 'main:create_product' %}">
             <button>
                 Add New Product
             </button>
+            <a href="{% url 'main:logout' %}">
+                <button>
+                    Logout
+                </button>
+            </a>
         </a>
     </body>
 </html>
