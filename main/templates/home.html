@@ -19,6 +19,7 @@
         <hr>
         <h2>Bambang memiliki {{ total_item }} nama item di Inventory nya</h2>
         <h2>Isi inventory Bambang saat ini adalah {{ total_amount }} buah item</h2>
+    
             <table style="width: 100%">
                 <tr>
                     <th>Name</th>
@@ -27,6 +28,8 @@
                     <th>Effect</th>
                     <th>Value</th>
                     <th>Remove</th>
+                    <th>Amount++</th>
+                    <th>Amount--</th>
                 </tr>
                     {% for i in all %}
                 <tr>
@@ -35,10 +38,35 @@
                     <td>{{ i.description }}</td>
                     <td>{{ i.effect }}</td>
                     <td>{{ i.value }}</td>
+                    <td>
+                        <form method="post" action="{% url 'main:delete_item' i.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Hapus</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'main:increement_amount' i.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Tambahkan</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'main:decreement_amount' i.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Kurangkan</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
             <h5>Sesi terakhir login: {{ last_login }}</h5>
+            {% if messages %}  
+                <ul>   
+                    {% for message in messages %}  
+                        <li>{{ message }}</li>  
+                    {% endfor %}  
+                </ul>   
+            {% endif %}
         <br>
         <a href="{% url 'main:create_product' %}">
             <button>
