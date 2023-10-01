@@ -122,7 +122,7 @@ def decreement_amount(request, id):
         updated_item.amount -= 1 #Kurangkan nilai value sebanyak 1 jika amount > 0
         updated_item.save()
     else:
-        messages.error(request, 'Jumlah item sudah 0') #Tampilkan pesan error jika amount yang ingin dikurang sudah 0
+        messages.error(request, f'Jumlah dari {updated_item.name} sudah 0') #Tampilkan pesan error jika amount yang ingin dikurang sudah 0
     return HttpResponseRedirect(reverse('main:home'))
 
 
