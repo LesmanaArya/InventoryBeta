@@ -21,6 +21,7 @@ from django.urls import reverse
 def home(request):
     all_items = Item.objects.all().order_by('name').values() #Urutkan berdasarkan nama item
     total_item = Item.objects.count() #Mendapatkan total objek yang ada
+    last_item = Item.objects.last()
 
 
     total_amount = 0
@@ -34,7 +35,8 @@ def home(request):
         'all': all_items, 
         'total_item': total_item,
         'total_amount': total_amount,
-        'last_login': request.COOKIES['last_login']
+        'last_login': request.COOKIES['last_login'],
+        'last_item' : last_item
     }
     return render(request, 'home.html', context)  # Render isi dari data Item kita ke file home.html
 
@@ -131,5 +133,20 @@ def delete_item(request, id):
     deleted_item.delete() #Delete item dengan id yang didapat
     return HttpResponseRedirect(reverse('main:home'))
 
+
+def edit_product(request, id):
+    # Get product berdasarkan ID
+    get_item = Item.objects.get(pk = id)
+
+    # Set product sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=get_item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:home'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
 
 

@@ -8,17 +8,50 @@
           border-collapse: collapse;
         }
         th, td {
-            padding: 15px
+            padding: 15px;
+            text-align: center;
+        }
+        .judul {
+            color : green;
+            font-size: 40px;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .jumlahItem {
+            color : blue;
+            font-size: 20px;
+            font-weight: lighter;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .barisAkhir {
+            color: red;
         }
         </style>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">{{ name }}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link" href="{% url 'main:logout' %}">Logout</a>
+            </div>
+          </div>
+        </div>
+      </nav>
     <body>
         <h1>Inventory Si Bambang</h1>
-        <p>{{ name }}</p>
         <p>2206081603</p>
         <p>PBP F</p> 
         <hr>
-        <h2>Bambang memiliki {{ total_item }} nama item di Inventory nya</h2>
-        <h2>Isi inventory Bambang saat ini adalah {{ total_amount }} buah item</h2>
+        <h2>
+            <div class ='judul' >Bambang memiliki {{ total_item }} nama item di Inventory nya</div>
+        </h2>
+        <h2>
+            <div class="jumlahItem">Inventory Bambang saat ini adalah {{ total_amount }} buah item</div>
+        </h2>
             <table style="width: 100%">
                 <tr>
                     <th>Name</th>
@@ -29,9 +62,12 @@
                     <th>Remove</th>
                     <th>Amount++</th>
                     <th>Amount--</th>
+                    <th>Edit</th>
                 </tr>
                     {% for i in all %}
                 <tr>
+                    {% if i.id == last_item.id %}
+                        <div class="barisAkhir"></div>
                     <td>{{ i.name }}</td>
                     <td>{{ i.amount }}</td>
                     <td>{{ i.description }}</td>
@@ -55,6 +91,11 @@
                             <button type="submit">Kurangkan</button>
                         </form>
                     </td>
+                    <td>
+                        <a href="{% url 'main:edit_product' i.id %}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -71,10 +112,5 @@
             <button>
                 Add New Product
             </button>
-            <a href="{% url 'main:logout' %}">
-                <button>
-                    Logout
-                </button>
-            </a>
         </a>
 {%endblock%}
