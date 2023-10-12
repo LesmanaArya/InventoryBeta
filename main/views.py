@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from main.forms import ItemForm
 from django.urls import reverse
 from .models import Item
@@ -14,29 +14,30 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 @login_required(login_url='/login')
 def home(request):
-    all_items = Item.objects.all().order_by('name').values() #Urutkan berdasarkan nama item
+    all_items = Item.objects.all().filter(user=request.user).order_by('name').values() #Urutkan berdasarkan nama item
     total_item = Item.objects.count() #Mendapatkan total objek yang ada
-    last_item = Item.objects.last()
-
 
     total_amount = 0
+    list_nama_item = []
 
     for obj in Item.objects.all():
         total_amount += obj.amount #Mendapatkan total amount dari seluruh objek yang ada
-    
+        list_nama_item.append(obj.name)
 
     context = {
         'name': request.user.username,
+        'kelas': "PBP F",
+        'npm': 2206081603,
         'all': all_items, 
         'total_item': total_item,
         'total_amount': total_amount,
         'last_login': request.COOKIES['last_login'],
-        'last_item' : last_item
+        'list_nama_item': list_nama_item
     }
     return render(request, 'home.html', context)  # Render isi dari data Item kita ke file home.html
 
@@ -149,4 +150,25 @@ def edit_product(request, id):
     context = {'form': form}
     return render(request, "edit_product.html", context)
 
+
+
+def get_product_json(request):
+    product_item = Item.objects.all()
+    return HttpResponse(serializers.serialize('json', product_item))
+
+
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        effect = request.POST.get("effect")
+        value = request.POST.get("value")
+        user = request.user
+
+        new_product = Item(name=name, amount=amount, description=description, effect=effect, value=value,user=user)
+        new_product.save()
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
 

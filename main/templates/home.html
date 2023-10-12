@@ -11,94 +11,124 @@
             padding: 15px;
             text-align: center;
         }
-        .judul {
-            color : green;
+        #judul {
+            color : rgb(128, 0, 113);
             font-size: 40px;
             font-weight: bold;
             font-style: italic;
         }
-        .jumlahItem {
-            color : blue;
-            font-size: 20px;
+        #total_amount {
+            color : rgb(255, 89, 0);
+            font-size: 30px;
             font-weight: lighter;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
         .barisAkhir {
             color: red;
         }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .row {
+            justify-content: center;
+            gap: 20px;
+        }
+        .card {
+            margin: 5px;
+            width: 395px; 
+            height: 300px; 
+            background-color: #f5f5f5; /* Background color */
+            border: 1px solid #ddd; /* Border color */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift effect */
+        }
+        .card-title {
+            font-size: 24px; /* Title font size */
+            color: #333; /* Title text color */
+            font-family: 'Arial', sans-serif; /* Title font family */
+        }
+
+        .card-text {
+            font-size: 16px; /* Text font size */
+            color: #555; /* Text color */
+            font-family: 'Arial', sans-serif; /* Text font family */
+        }
+        
         </style>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
           <a class="navbar-brand" href="#">{{ name }}</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-              <a class="nav-link" href="{% url 'main:logout' %}">Logout</a>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product</button>
+                <a href="{% url 'main:logout' %}">
+                    <button type="button" class="btn btn-warning" style="margin-left: 10px;">Logout</button>
+                </a>
             </div>
           </div>
         </div>
-      </nav>
-    <body>
+    </nav>
+    
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount" ></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="effect" class="col-form-label">Effect:</label>
+                            <textarea class="form-control" id="effect" name="effect"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="value" class="col-form-label">Value:</label>
+                            <input type="number" class="form-control" id="value" name="value" ></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <h1>Inventory Si Bambang</h1>
-        <p>2206081603</p>
-        <p>PBP F</p> 
+        <p>{{ npm }}</p>
+        <p>{{ kelas }}</p> 
         <hr>
         <h2>
-            <div class ='judul' >Bambang memiliki {{ total_item }} nama item di Inventory nya</div>
+            <div id ="judul"></div>
         </h2>
         <h2>
-            <div class="jumlahItem">Inventory Bambang saat ini adalah {{ total_amount }} buah item</div>
+            <div id="total_amount"></div>
         </h2>
-            <table style="width: 100%">
-                <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Effect</th>
-                    <th>Value</th>
-                    <th>Remove</th>
-                    <th>Amount++</th>
-                    <th>Amount--</th>
-                    <th>Edit</th>
-                </tr>
-                    {% for i in all %}
-                <tr>
-                    {% if i.id == last_item.id %}
-                        <div class="barisAkhir"></div>
-                    <td>{{ i.name }}</td>
-                    <td>{{ i.amount }}</td>
-                    <td>{{ i.description }}</td>
-                    <td>{{ i.effect }}</td>
-                    <td>{{ i.value }}</td>
-                    <td>
-                        <form method="post" action="{% url 'main:delete_item' i.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Hapus</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="{% url 'main:increement_amount' i.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Tambahkan</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="{% url 'main:decreement_amount' i.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Kurangkan</button>
-                        </form>
-                    </td>
-                    <td>
-                        <a href="{% url 'main:edit_product' i.id %}">
-                            <button>Edit</button>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+        <div class="card-container">
+            <div class='row' id="product_cards"></div>
+        </div>
             <h5>Sesi terakhir login: {{ last_login }}</h5>
             {% if messages %}  
                 <ul>   
@@ -108,9 +138,114 @@
                 </ul>   
             {% endif %}
         <br>
-        <a href="{% url 'main:create_product' %}">
-            <button>
-                Add New Product
-            </button>
-        </a>
+
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+            document.getElementById("product_cards").innerHTML = "";
+            const products = await getProducts();
+            let htmlString = "";
+            let totalAmount = 0; // Initialize the total amount variable
+            let totalItem = 0;
+            products.forEach((item) => {
+            const urlEdit = "{% url 'main:edit_product' id=0 %}".replace('0', item.pk)
+            htmlString += `
+            <div class="card col-md-4">
+                <div class="card-body">
+                    <h5 class="card-title">${item.fields.name}</h5>
+                    <p class="card-text">Amount: ${item.fields.amount}</p>
+                    <p class="card-text">Description: ${item.fields.description}</p>
+                    <p class="card-text">Effect: ${item.fields.effect}</p>
+                    <p class="card-text">Value: ${item.fields.value}</p>
+                    <a href="${urlEdit}" class="btn btn-success">Edit</a>
+                    <button class="btn btn-danger" onclick="deleteItem(${item.pk})">Delete</button>
+                    <button class="btn btn-primary" onclick="increementAmount(${item.pk})">Increment</button>
+                    <button class="btn btn-secondary" onclick="decreementAmount(${item.pk})">Decrement</button>
+                </div>
+            </div>`;
+            totalItem += 1
+            totalAmount += item.fields.amount; // Add the amount of each item to the total amount
+        });
+            document.getElementById("product_cards").innerHTML = htmlString;
+            document.getElementById("total_amount").textContent = `Inventory Bambang saat ini adalah ${totalAmount} buah item`;
+            document.getElementById("judul").textContent = `Bambang memiliki ${totalItem} jenis item di inventory`;
+        }
+
+        refreshProducts()
+        function addProduct() {
+            const name = document.getElementById("name").value;
+            const amount = document.getElementById("amount").value;
+            const description = document.getElementById("description").value;
+            const effect = document.getElementById("effect").value;
+            const value = document.getElementById("value").value;
+            const list_name = refreshProducts();
+
+            if (name == "" || amount == "" || description == "" || effect == "" || value == "") {
+                alert("Please fill in all the fields");
+                document.getElementById("form").reset()
+                return false;
+            }
+
+            if (parseInt(amount) < 0) {
+                alert("The value of amount must be greater than zero!");
+                document.getElementById("form").reset()
+                return false;
+            }
+
+            if (parseInt(value) < 0) {
+                alert("Value must be greater than zero!");
+                document.getElementById("form").reset()
+                return false;
+            }
+
+            fetch("{% url 'main:add_product_ajax' %}", {
+             method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            refreshProducts()
+            return false
+        }
+
+        document.getElementById("button_add").onclick = addProduct
+
+        async function deleteItem(itemId) {
+            const confirmation = confirm("Are you sure you want to delete this item?");
+            if (confirmation) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                await fetch(`{% url 'main:delete_item' id=0 %}`.replace('0', itemId), {
+                    method: "DELETE",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                    },
+                });
+                refreshProducts();
+                }
+            }
+
+        async function increementAmount(itemId) {
+            await fetch(`{% url 'main:increement_amount' id=0 %}`.replace('0', itemId), {
+                method: "GET",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+            });
+            refreshProducts();
+        }
+
+        async function decreementAmount(itemId) {
+            await fetch(`{% url 'main:decreement_amount' id=0 %}`.replace('0', itemId), {
+                method: "GET",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+            });
+            refreshProducts();
+        }
+        refreshProducts();
+    </script>
 {%endblock%}
