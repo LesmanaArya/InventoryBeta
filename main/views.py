@@ -75,7 +75,7 @@ def show_json_by_id(request, id):
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 
-def register(request):
+def register_user(request):
     form = UserCreationForm()
 
     if request.method == "POST":
@@ -153,7 +153,7 @@ def edit_product(request, id):
 
 
 def get_product_json(request):
-    product_item = Item.objects.all()
+    product_item = Item.objects.all().filter(user=request.user)
     return HttpResponse(serializers.serialize('json', product_item))
 
 
@@ -171,4 +171,7 @@ def add_product_ajax(request):
         new_product.save()
         return HttpResponse(b"CREATED", status=201)
     return HttpResponseNotFound()
+
+
+
 
