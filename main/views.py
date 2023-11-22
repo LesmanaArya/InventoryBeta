@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from main.forms import ItemForm
@@ -74,7 +75,7 @@ def show_json_by_id(request, id):
     data = Item.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-
+@csrf_exempt
 def register_user(request):
     form = UserCreationForm()
 
@@ -87,7 +88,7 @@ def register_user(request):
     context = {'form':form}
     return render(request, 'register.html', context)
 
-
+@csrf_exempt
 def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -171,6 +172,26 @@ def add_product_ajax(request):
         new_product.save()
         return HttpResponse(b"CREATED", status=201)
     return HttpResponseNotFound()
+
+
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_product = Item.objects.create(
+            user = request.user,
+            name = data["name"],
+            amount = int(data["amount"]),
+            description = data["description"]
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
 
 
 

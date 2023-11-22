@@ -18,5 +18,6 @@ urlpatterns = [
     path('delete_item/<int:id>', views.delete_item, name='delete_item'),
     path('edit_product/<int:id>', views.edit_product, name='edit_product'),
     path('get-product/', views.get_product_json, name='get_product_json'),
-    path('create-product-ajax/', views.add_product_ajax, name='add_product_ajax')
+    path('create-product-ajax/', views.add_product_ajax, name='add_product_ajax'),
+    path('create-flutter/', views.create_product_flutter, name='create_product_flutter'),
 ]
