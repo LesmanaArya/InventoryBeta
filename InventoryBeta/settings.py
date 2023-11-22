@@ -58,6 +58,7 @@ PRODUCTION = env.bool('PRODUCTION', False)
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://arya-lesmana21-tugas.pbp.cs.ui.ac.id/"]
 
 
 # Application definition
